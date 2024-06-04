@@ -1,0 +1,102 @@
+body {
+  font-family: "楷体", Arial, sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-size: 18px; /* 增加整体字体大小 */
+}
+
+#icon {
+  width: 150px; /* 调整图标大小 */
+  height: 150px;
+  margin-bottom: 30px;
+}
+
+h1 {
+  color: #4a4a4a;
+  font-size: 2.5em; /* 增加标题字体大小 */
+}
+
+#chat {
+  width: 80%;
+  max-width: 1200px; /* 增加最大宽度 */
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px; /* 增加内边距 */
+  box-sizing: border-box;
+}
+
+#messages {
+  max-height: 800px; /* 增加消息区域高度 */
+  overflow-y: auto;
+  margin-bottom: 30px;
+}
+
+#messages div {
+  margin-bottom: 15px;
+  padding: 15px; /* 增加消息框内边距 */
+  border-radius: 5px;
+  background: #f1f1f1;
+  font-size: 1.1em; /* 增加消息字体大小 */
+}
+
+#messages div strong {
+  color: #333;
+}
+
+#input-container {
+  display: flex;
+  align-items: center;
+}
+
+#input {
+  flex: 1;
+  padding: 15px; /* 增加输入框内边距 */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+  box-sizing: border-box;
+  resize: none;
+  height: 50px; /* 增加输入框高度 */
+  font-family: inherit;
+  font-size: 1.1em; /* 增加输入框字体大小 */
+}
+
+#send {
+  padding: 15px 25px; /* 增加发送按钮内边距 */
+  border: none;
+  background: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.1em; /* 增加按钮字体大小 */
+}
+
+#send:hover {
+  background: #0056b3;
+}
+
+.related-question {
+  display: block; /* 使每个相关问题占用一行 */
+  border: 1px solid #007bff;
+  padding: 15px; /* 增加相关问题框内边距 */
+  border-radius: 4px;
+  margin-top: 10px;
+  background: #e9f5ff;
+  cursor: pointer;
+  color: #007bff;
+  word-wrap: break-word; /* 防止长单词溢出 */
+  max-width: -moz-fit-content;
+  max-width: fit-content;
+  font-size: 1.1em; /* 增加相关问题字体大小 */
+}
+
+.related-question:hover {
+  background: #d0e8ff;
+}

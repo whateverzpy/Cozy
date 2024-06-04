@@ -6,13 +6,14 @@ const path = require("path");
 
 function createWindow() {
 	const mainWindow = new BrowserWindow({
-		width: 800,
-		height: 600,
+		width: 1600,
+		height: 1000,
 		webPreferences: {
 			preload: path.join(__dirname, "preload.js"), // 预加载脚本
 			contextIsolation: true, // 重要
 			enableRemoteModule: false, // 禁用远程模块
 			nodeIntegration: false, // 禁用 Node.js 集成
+			webSecurity: false, // 禁用 Web 安全策略
 		},
 	});
 

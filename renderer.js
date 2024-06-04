@@ -1,20 +1,21 @@
-
 document.addEventListener("DOMContentLoaded", () => {
 	const input = document.getElementById("input");
 	const sendButton = document.getElementById("send");
 	const messages = document.getElementById("messages");
-  const BOT_ID = window.env.BOT_ID;
-  const PERSONAL_ACCESS_TOKEN = window.env.PERSONAL_ACCESS_TOKEN;
+	const BOT_ID = window.env.BOT_ID;
+	const PERSONAL_ACCESS_TOKEN = window.env.PERSONAL_ACCESS_TOKEN;
 	let chatHistory = [];
 
-	// 发送消息的函数
 	async function sendMessage(query) {
-		// 显示用户消息
+		if (query.trim().toLowerCase() === "/clear") {
+			clearChat();
+			return;
+		}
+
 		const userMessageElement = document.createElement("div");
 		userMessageElement.innerHTML = `<strong>User:</strong> ${query}`;
 		messages.appendChild(userMessageElement);
 
-		// 更新 chatHistory
 		chatHistory.push({
 			role: "user",
 			content: query,
@@ -44,10 +45,10 @@ document.addEventListener("DOMContentLoaded", () => {
 		const decoder = new TextDecoder("utf-8");
 
 		let done = false;
-		let fullMessage = ""; // 用于拼接完整的消息
-		let buffer = ""; // 用于存储未处理的部分数据
+		let fullMessage = "";
+		let buffer = "";
 		const botMessageElement = document.createElement("div");
-		botMessageElement.innerHTML = `<strong>Bot:</strong> `; // 先初始化消息元素
+		botMessageElement.innerHTML = `<strong>Bot:</strong> `;
 		messages.appendChild(botMessageElement);
 
 		while (!done) {
@@ -55,11 +56,10 @@ document.addEventListener("DOMContentLoaded", () => {
 			done = doneReading;
 			const chunk = decoder.decode(value, { stream: true });
 
-			buffer += chunk; // 将当前块添加到缓冲区
+			buffer += chunk;
 
-			// 处理缓冲区中的流数据
 			let lines = buffer.split("\n");
-			buffer = lines.pop(); // 将最后一个部分保留在缓冲区中，防止不完整
+			buffer = lines.pop();
 
 			for (const line of lines) {
 				if (line) {
@@ -67,34 +67,27 @@ document.addEventListener("DOMContentLoaded", () => {
 						const data = JSON.parse(line.replace(/^data:/, "").trim());
 						if (data.event === "message") {
 							if (data.message.type === "follow_up") {
-								// 创建可点击的相关问题
 								const followUpQuestionElement = document.createElement("div");
-								followUpQuestionElement.innerHTML = `<strong>Related Question:</strong> ${data.message.content}`;
-								followUpQuestionElement.style.cursor = "pointer";
-								followUpQuestionElement.style.color = "blue";
+								followUpQuestionElement.innerHTML = `${data.message.content}`;
+								followUpQuestionElement.classList.add("related-question");
 								followUpQuestionElement.addEventListener("click", () => {
 									sendMessage(data.message.content);
 								});
 								messages.appendChild(followUpQuestionElement);
 							} else if (data.message.type === "verbose") {
-								// 忽略 verbose 类型的消息
 								continue;
 							} else {
-								fullMessage += data.message.content; // 拼接消息内容
-								botMessageElement.innerHTML = `<strong>Bot:</strong> ${fullMessage}`; // 实时更新消息元素的内容
+								fullMessage += data.message.content;
+								botMessageElement.innerHTML = `<strong>Bot:</strong> ${fullMessage}`;
 							}
 						}
-					} catch (e) {
-						// 忽略解析错误，继续处理剩余数据
-					}
+					} catch (e) {}
 				}
 			}
 		}
 
-		// 确保在流结束后，完整地显示消息
 		if (fullMessage) {
 			botMessageElement.innerHTML = `<strong>Bot:</strong> ${fullMessage}`;
-			// 更新 chatHistory
 			chatHistory.push({
 				role: "assistant",
 				type: "answer",
@@ -102,17 +95,43 @@ document.addEventListener("DOMContentLoaded", () => {
 				content_type: "text",
 			});
 
-			// 保证 chatHistory 只保留最近的 10 轮对话
 			if (chatHistory.length > 20) {
 				chatHistory = chatHistory.slice(chatHistory.length - 20);
 			}
 		}
 	}
 
+	function clearChat() {
+		messages.innerHTML = "";
+		chatHistory = [];
+		const newChatMessageElement = document.createElement("div");
+		newChatMessageElement.innerHTML = `<strong>System:</strong> 开始新的对话`;
+		messages.appendChild(newChatMessageElement);
+	}
+
 	sendButton.addEventListener("click", () => {
 		const query = input.value;
-		if (query.trim() === "") return; // 防止发送空消息
+		if (query.trim() === "") return;
 		input.value = "";
 		sendMessage(query);
+	});
+
+	// 添加按下回车键发送消息的功能，并且按下Shift+Enter实现换行
+	input.addEventListener("keydown", (event) => {
+		if (event.key === "Enter") {
+			if (event.shiftKey) {
+				// 按下Shift+Enter时换行
+				event.preventDefault();
+				const start = input.selectionStart;
+				const end = input.selectionEnd;
+				input.value =
+					input.value.substring(0, start) + "\n" + input.value.substring(end);
+				input.selectionStart = input.selectionEnd = start + 1;
+			} else {
+				// 按下Enter时发送消息
+				event.preventDefault(); // 防止默认的回车行为（换行）
+				sendButton.click();
+			}
+		}
 	});
 });
