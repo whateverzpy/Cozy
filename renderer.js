@@ -1,3 +1,4 @@
+// renderer.js
 document.addEventListener("DOMContentLoaded", () => {
 	const input = document.getElementById("input");
 	const sendButton = document.getElementById("send");
@@ -14,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		const userMessageElement = document.createElement("div");
 		userMessageElement.innerHTML = `<strong>User:</strong> ${query}`;
-		messages.appendChild(userMessageElement);
+		document.getElementById("messages").appendChild(userMessageElement);
 
 		chatHistory.push({
 			role: "user",
@@ -49,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		let buffer = "";
 		const botMessageElement = document.createElement("div");
 		botMessageElement.innerHTML = `<strong>Bot:</strong> `;
-		messages.appendChild(botMessageElement);
+		document.getElementById("messages").appendChild(botMessageElement);
 
 		while (!done) {
 			const { value, done: doneReading } = await reader.read();
@@ -73,21 +74,29 @@ document.addEventListener("DOMContentLoaded", () => {
 								followUpQuestionElement.addEventListener("click", () => {
 									sendMessage(data.message.content);
 								});
-								messages.appendChild(followUpQuestionElement);
+								document
+									.getElementById("messages")
+									.appendChild(followUpQuestionElement);
 							} else if (data.message.type === "verbose") {
 								continue;
 							} else {
 								fullMessage += data.message.content;
-								botMessageElement.innerHTML = `<strong>Bot:</strong> ${fullMessage}`;
+								botMessageElement.innerHTML = `<strong>Bot:</strong> ${marked.parse(
+									fullMessage
+								)}`;
 							}
 						}
-					} catch (e) {}
+					} catch (e) {
+						console.error(e);
+					}
 				}
 			}
 		}
 
 		if (fullMessage) {
-			botMessageElement.innerHTML = `<strong>Bot:</strong> ${fullMessage}`;
+			botMessageElement.innerHTML = `<strong>Bot:</strong> ${marked.parse(
+				fullMessage
+			)}`;
 			chatHistory.push({
 				role: "assistant",
 				type: "answer",
