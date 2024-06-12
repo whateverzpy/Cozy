@@ -1,6 +1,6 @@
+/* 定义基础样式 */
 body {
 	font-family: "楷体", Arial, sans-serif;
-	background-color: #f4f4f9;
 	margin: 0;
 	padding: 0;
 	display: flex;
@@ -8,46 +8,71 @@ body {
 	align-items: center;
 	justify-content: center;
 	height: 100vh;
-	font-size: 18px; /* 增加整体字体大小 */
+	font-size: 18px;
+	background-color: var(--background-color);
+	color: var(--text-color);
+}
+
+.theme-toggle-button {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background-color: var(--button-background-color);
+	border: none;
+	box-shadow: 0 4px 8px var(--box-shadow-color);
+	cursor: pointer;
+}
+
+.theme-toggle-button:hover {
+	box-shadow: 0 6px 12px var(--box-shadow-hover-color);
 }
 
 #icon {
-	width: 150px; /* 调整图标大小 */
+	width: 150px;
 	height: 150px;
 	margin-bottom: 30px;
 }
 
-h1 {
-	color: #4a4a4a;
-	font-size: 2.5em; /* 增加标题字体大小 */
+#title {
+	font-size: 2.5em;
+	color: var(--title-color);
 }
 
 #chat {
 	width: 80%;
-	max-width: 1200px; /* 增加最大宽度 */
-	background: #ffffff;
+	max-width: 1200px;
+	background: var(--chat-background);
 	border-radius: 8px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	padding: 30px; /* 增加内边距 */
+	padding: 30px;
 	box-sizing: border-box;
 }
 
 #messages {
-	max-height: 800px; /* 增加消息区域高度 */
+	max-height: 800px;
 	overflow-y: auto;
 	margin-bottom: 30px;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+#messages::-webkit-scrollbar {
+	display: none;
 }
 
 #messages div {
 	margin-bottom: 15px;
-	padding: 15px; /* 增加消息框内边距 */
+	padding: 15px;
 	border-radius: 5px;
-	background: #f1f1f1;
-	font-size: 1.1em; /* 增加消息字体大小 */
+	background: var(--message-background);
+	font-size: 1.1em;
 }
 
 #messages div strong {
-	color: #333;
+	color: var(--message-strong-color);
 }
 
 #input-container {
@@ -57,25 +82,33 @@ h1 {
 
 #input {
 	flex: 1;
-	padding: 15px; /* 增加输入框内边距 */
+	padding: 15px;
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	margin-right: 10px;
 	box-sizing: border-box;
 	resize: none;
-	height: 50px; /* 增加输入框高度 */
+	height: 50px;
 	font-family: inherit;
-	font-size: 1.1em; /* 增加输入框字体大小 */
+	font-size: 1.1em;
+	background: var(--input-background);
+	color: var(--input-color);
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+#input::-webkit-scrollbar {
+	display: none;
 }
 
 #send {
-	padding: 15px 25px; /* 增加发送按钮内边距 */
+	padding: 15px 25px;
 	border: none;
 	background: #007bff;
 	color: white;
 	border-radius: 4px;
 	cursor: pointer;
-	font-size: 1.1em; /* 增加按钮字体大小 */
+	font-size: 1.1em;
 }
 
 #send:hover {
@@ -83,22 +116,22 @@ h1 {
 }
 
 .related-question {
-	display: block; /* 使每个相关问题占用一行 */
+	display: block;
 	border: 1px solid #007bff;
-	padding: 15px; /* 增加相关问题框内边距 */
+	padding: 15px;
 	border-radius: 4px;
 	margin-top: 10px;
-	background: #e9f5ff;
+	background: var(--related-question-background);
 	cursor: pointer;
 	color: #007bff;
-	word-wrap: break-word; /* 防止长单词溢出 */
+	word-wrap: break-word;
 	max-width: -moz-fit-content;
 	max-width: fit-content;
-	font-size: 1.1em; /* 增加相关问题字体大小 */
+	font-size: 1.1em;
 }
 
 .related-question:hover {
-	background: #d0e8ff;
+	background: var(--related-question-hover-background);
 }
 
 table {
@@ -108,7 +141,7 @@ table {
 	border: 1px solid #dddddd;
 	border-radius: 10px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	background-color: #ffffff;
+	background-color: var(--table-background);
 	margin-top: 20px;
 }
 
@@ -117,15 +150,15 @@ td {
 	border: 1px solid #dddddd;
 	text-align: left;
 	padding: 8px;
-	background-color: #ffffff;
+	background-color: var(--table-cell-background);
 }
 
 th {
-	background-color: #f2f2f2;
+	background-color: var(--table-header-background);
 }
 
 tr:nth-child(even) {
-	background-color: #f9f9f9;
+	background-color: var(--table-row-even-background);
 }
 
 tr:first-child th:first-child {
@@ -142,4 +175,46 @@ tr:last-child td:first-child {
 
 tr:last-child td:last-child {
 	border-bottom-right-radius: 10px;
+}
+
+/* 定义白天模式变量 */
+:root {
+	--background-color: #f4f4f9;
+	--text-color: #4a4a4a;
+	--button-background-color: #333;
+	--box-shadow-color: rgba(0, 0, 0, 0.2);
+	--box-shadow-hover-color: rgba(0, 0, 0, 0.3);
+	--title-color: #4a4a4a;
+	--chat-background: #ffffff;
+	--message-background: #f1f1f1;
+	--message-strong-color: #333;
+	--input-background: #ffffff;
+	--input-color: #333;
+	--related-question-background: #e9f5ff;
+	--related-question-hover-background: #d0e8ff;
+	--table-background: #ffffff;
+	--table-cell-background: #ffffff;
+	--table-header-background: #f2f2f2;
+	--table-row-even-background: #f9f9f9;
+}
+
+/* 定义黑暗模式变量 */
+.dark-theme {
+	--background-color: #121212;
+	--text-color: #e0e0e0;
+	--button-background-color: #e0e0e0;
+	--box-shadow-color: rgba(255, 255, 255, 0.2);
+	--box-shadow-hover-color: rgba(255, 255, 255, 0.3);
+	--title-color: #e0e0e0;
+	--chat-background: #333;
+	--message-background: #1e1e1e;
+	--message-strong-color: #fff;
+	--input-background: #333;
+	--input-color: #e0e0e0;
+	--related-question-background: #333;
+	--related-question-hover-background: #444;
+	--table-background: #333;
+	--table-cell-background: #333;
+	--table-header-background: #444;
+	--table-row-even-background: #2b2b2b;
 }

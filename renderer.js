@@ -144,3 +144,30 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	});
 });
+
+// 获取切换按钮和文档根元素
+const themeToggle = document.getElementById("theme-toggle");
+const rootElement = document.documentElement;
+
+// 定义本地存储键名
+const themeKey = "theme";
+
+// 切换主题函数
+const toggleTheme = () => {
+	const isDarkTheme = rootElement.classList.toggle("dark-theme");
+	localStorage.setItem(themeKey, isDarkTheme ? "dark" : "light");
+};
+
+// 读取本地存储中的主题并应用
+const applyStoredTheme = () => {
+	const storedTheme = localStorage.getItem(themeKey);
+	if (storedTheme === "dark") {
+		rootElement.classList.add("dark-theme");
+	}
+};
+
+// 绑定点击事件
+themeToggle.addEventListener("click", toggleTheme);
+
+// 初始化应用存储的主题
+applyStoredTheme();

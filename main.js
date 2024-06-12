@@ -13,7 +13,6 @@ function createWindow() {
 			contextIsolation: true, // 重要
 			enableRemoteModule: false, // 禁用远程模块
 			nodeIntegration: false, // 禁用 Node.js 集成
-			webSecurity: false, // 禁用 Web 安全策略
 		},
 	});
 
